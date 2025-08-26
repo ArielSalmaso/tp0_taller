@@ -4,24 +4,31 @@
 mod flatlander;
 mod input;
 mod solve;
+mod errors;
+
+
+
 
 use crate::input::*;
-use crate::solve::{ArithError, Solver};
+use crate::solve::Solver;
+use crate::errors::Errors;
+
+fn handle_error(e: Errors) {
+    match e {
+        Errors::IO => eprintln!("Error: IO"),
+        Errors::FueraRango => eprintln!("Error: Fuera de rango"),
+        Errors::ValorFaltante => eprintln!("Error: Valor faltante"), //error de input 
+        Errors::NumeroInvalido => eprintln!("Error: Numero invalido"),
+        Errors::LineaFaltante => eprintln!("Error: Linea faltante"),
+    };
+
+}
 
 fn main() {
     // cambiar esto esta mal, lo deberia manejar acá
     let (theta, n) = leer_theta_and_n();
     let flatlanders = leer_flatlanders(n);
 
-    let solver: Solver = match Solver::new(flatlanders, theta) {
-        Ok(s) => s,
-        Err(ArithError::TangenteEs0) => {
-            println!(
-                "Error al crear el solver, la tangente del angulo es 0. θ: {}",
-                theta
-            );
-            return;
-        }
-    };
-    solver.solve();
+    // let solver: Solver = Solver::new(flatlanders, theta); 
+    // println!("{}", solver.solve()) ver que hacer con esto
 }
