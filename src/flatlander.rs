@@ -1,1 +1,1 @@
-pub struct Flatlander(pub i32, pub i32);  //x,h
+pub struct Flatlander(pub u32, pub u32); //x,h

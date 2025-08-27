@@ -1,34 +1,21 @@
-//lee los datos, resulve y muestra el resultado
-
 //TODO: cambiar los tipos de las variables a como pide el enunciado! y ver lo de las cotas de errores.
+mod errors;
 mod flatlander;
 mod input;
 mod solve;
-mod errors;
 
-
-
-
-use crate::input::*;
+use crate::errors::Error;
+use crate::input::parsear_lineas;
 use crate::solve::Solver;
-use crate::errors::Errors;
 
-fn handle_error(e: Errors) {
+fn handle_error(e: Error) {
     match e {
-        Errors::IO => eprintln!("Error: IO"),
-        Errors::FueraRango => eprintln!("Error: Fuera de rango"),
-        Errors::ValorFaltante => eprintln!("Error: Valor faltante"), //error de input 
-        Errors::NumeroInvalido => eprintln!("Error: Numero invalido"),
-        Errors::LineaFaltante => eprintln!("Error: Linea faltante"),
+        Error::IO => eprintln!("Error: IO"),
+        Error::FueraRango => eprintln!("Error: Fuera de rango"),
+        Error::ValorFaltante => eprintln!("Error: Valor faltante"), //error de input
+        Error::NumeroInvalido => eprintln!("Error: Numero invalido"),
+        Error::LineaFaltante => eprintln!("Error: Linea faltante"),
     };
-
 }
 
-fn main() {
-    // cambiar esto esta mal, lo deberia manejar acá
-    let (theta, n) = leer_theta_and_n();
-    let flatlanders = leer_flatlanders(n);
-
-    // let solver: Solver = Solver::new(flatlanders, theta); 
-    // println!("{}", solver.solve()) ver que hacer con esto
-}
+fn main() {}

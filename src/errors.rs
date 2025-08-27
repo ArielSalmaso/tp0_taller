@@ -1,7 +1,7 @@
-pub enum Errors {
+pub enum Error {
     IO,
     FueraRango,
     ValorFaltante,
     NumeroInvalido,
-    LineaFaltante
+    LineaFaltante,
 }
