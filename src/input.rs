@@ -1,8 +1,15 @@
 use crate::errors::Error;
 use crate::flatlander::Flatlander;
 use std::io;
-use std::iter::FusedIterator;
 
+
+/// Lee una línea de stdin y devuelve un `Result`.
+/// 
+/// Devuelve: 
+/// - Ok(`String`) contiene la línea leída.
+/// - Err([`Error`]), de los cuales puede devolver: 
+///   - [`Error::IO`]
+///   - [`Error::LineaFaltante`]
 fn leer_linea() -> Result<String, Error> {
     let mut linea: String = String::new();
 
@@ -17,6 +24,15 @@ fn leer_linea() -> Result<String, Error> {
     Ok(linea)
 }
 
+/// Recibe un vector de strings [theta, n]. Los almacena, chequea que esten dentro de los rangos pedidos 
+/// y los devuelve
+/// 
+/// Devuelve un `Result`: 
+/// - Ok(`(f64, usize)`)
+/// - Err([`Error`]), de los cuales puede ser:
+///      - [`Error::ValorFaltante`]
+///      - [`Error::FueraRango`]
+///      - [`Error::NumeroInvalido`]
 fn leer_theta_n(partes: Vec<&str>) -> Result<(f64, usize), Error> {
     if partes.len() < 2 {
         return Err(Error::ValorFaltante);
@@ -37,15 +53,24 @@ fn leer_theta_n(partes: Vec<&str>) -> Result<(f64, usize), Error> {
     Ok((theta, n))
 }
 
+/// Recibe un vector de strings [x, h]. Los almacena, chequea que esten dentro de los rangos pedidos 
+/// y los devuelve
+/// 
+/// Devuelve un `Result`: 
+/// - Ok([`crate::flatlander::Flatlander`])
+/// - Err([`Error`]), de los cuales puede ser
+///      - [`Error::ValorFaltante`]
+///      - [`Error::FueraRango`]
+///      - [`Error::NumeroInvalido`]
 fn leer_flatlander(partes: Vec<&str>) -> Result<Flatlander, Error> {
     if partes.len() < 2 {
         return Err(Error::ValorFaltante);
     }
 
-    //(0 <= X <= 3 . 10^5) ^ (1 <= H <= 1000)
     let x: u32 = partes[0].parse().map_err(|_| Error::NumeroInvalido)?;
 
-    if x > (3 * u32::pow(10, 5)) { // x < 0 esta puesto en NumeroInvalido, por problemas de parseo con el u32.
+    if x > (3 * u32::pow(10, 5)) {
+        // x < 0 esta puesto en NumeroInvalido, por problemas de parseo con el u32.
         return Err(Error::FueraRango);
     }
 
@@ -58,6 +83,11 @@ fn leer_flatlander(partes: Vec<&str>) -> Result<Flatlander, Error> {
     Ok(Flatlander(x, h))
 }
 
+/// Se encarga de parsear todas las lineas recibidas por stdin, esta funcion utiliza las demas del módulo asi que puede devolver cualquier de los errores anteriormente descritos.
+/// 
+/// Devuelve un `Result`: 
+/// - Ok((fa64, Vec<[`crate::flatlander::Flatlander`]>))
+/// - Err([`Error`]).
 pub fn parsear_lineas() -> Result<(f64, Vec<Flatlander>), Error> {
     let linea_header = leer_linea()?;
 
@@ -65,7 +95,7 @@ pub fn parsear_lineas() -> Result<(f64, Vec<Flatlander>), Error> {
 
     let (theta, n) = leer_theta_n(partes_header)?;
 
-    let mut flatlanders: Vec<Flatlander> = Vec::new(); 
+    let mut flatlanders: Vec<Flatlander> = Vec::new();
     for _ in 0..n {
         let linea_flatlander = leer_linea()?;
 
@@ -75,5 +105,5 @@ pub fn parsear_lineas() -> Result<(f64, Vec<Flatlander>), Error> {
         flatlanders.push(f);
     }
 
-    Ok((theta,flatlanders))
+    Ok((theta, flatlanders))
 }

@@ -1,4 +1,3 @@
-//TODO: cambiar los tipos de las variables a como pide el enunciado! y ver lo de las cotas de errores.
 mod errors;
 mod flatlander;
 mod input;
@@ -8,14 +7,29 @@ use crate::errors::Error;
 use crate::input::parsear_lineas;
 use crate::solve::Solver;
 
+/// Esta funcion matchea el error recibido e imprime un string por stderr segun corresponda.
 fn handle_error(e: Error) {
     match e {
         Error::IO => eprintln!("Error: IO"),
         Error::FueraRango => eprintln!("Error: Fuera de rango"),
-        Error::ValorFaltante => eprintln!("Error: Valor faltante"), //error de input
+        Error::ValorFaltante => eprintln!("Error: Valor faltante"),
         Error::NumeroInvalido => eprintln!("Error: Numero invalido"),
         Error::LineaFaltante => eprintln!("Error: Linea faltante"),
     };
 }
 
-fn main() {}
+fn main() {
+    let (theta, flatlanders) = match parsear_lineas() {
+        Ok(s) => s,
+        Err(e) => {
+            handle_error(e);
+            return;
+        }
+    };
+
+    let mut solver: Solver = Solver::new(flatlanders, theta);
+
+    let resultado = solver.solve();
+
+    println!("{:.6}", resultado); //medio en veremos esto
+}

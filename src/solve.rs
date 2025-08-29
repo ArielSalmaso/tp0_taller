@@ -1,18 +1,14 @@
 use crate::flatlander::Flatlander;
-
+/// Este struct almacena los datos del problema planteado para poder resolverlo
 pub struct Solver {
+    /// Un vector de flatlanders, veasé [`crate::flatlander::Flatlander`].
     flatlanders: Vec<Flatlander>,
+    /// La tangente del angulo recibido.
     tan_theta: f64,
 }
 
+/// Función que calcula la tangente del angulo recibido por parametro
 fn calcular_tan(theta: f64) -> f64 {
-    /*
-    Calcula la tangente del angulo pasado, primero pasa el angulo a radianes y luego realiza el calculo.
-    Recibe:
-        Un angulo en grados
-    Devuelve:
-        La tangente del angulo
-     */
     let theta_rads = theta.to_radians();
     let tan_theta = theta_rads.tan();
 
@@ -20,14 +16,8 @@ fn calcular_tan(theta: f64) -> f64 {
 }
 
 impl Solver {
+    /// Constructor del struct Solver
     pub fn new(flatlanders: Vec<Flatlander>, theta: f64) -> Self {
-        /*
-        Constructor del struct solver.
-        Recibe:
-            Un vector de flatlanders y un angulo.
-        Devuelve:
-            Un struct solver.
-         */
         let tan_theta: f64 = calcular_tan(theta);
         Solver {
             flatlanders,
@@ -35,15 +25,15 @@ impl Solver {
         }
     }
 
+    /// Método que devuelve el calulo de las sombras de los flatlanders (atributo del solver).
+    /// Para resolverlo primero se ordena el array de flatanders segun la coordenada x, y luego se hace el calculo de cada uno
+    /// teniendo en cuenta si se superponen o no.
+    /// Complejidad del algoritmo: O(n log n), siendo n la cantidad de flatlanders.
     pub fn solve(&mut self) -> f64 {
-        /*
-        Método que devuelve el calulo de las sombras de los flantedres (atributo del solver).
-        Para resolverlo primero se ordena el array de flatanders segun la coordenada x, y luego se hace el calculo de cada uno
-        teniendo en cuenta si se superponen o no.
 
-
-        Complejidad del algorimto: O(n log n), siendo n la cantidad de flatlanders.
-         */
+        if self.flatlanders.len() == 0 {
+            return 0.0 //este caso nunca deberia pasar, por el tema de los rangos pedidos del tp.
+        }
         self.flatlanders.sort_by_key(|f| f.0);
         let mut total: f64 = 0.;
         let mut inicio = self.flatlanders[0].0 as f64;
@@ -73,6 +63,68 @@ impl Solver {
     }
 }
 
-//tests
-#[test]
-fn ejecutar_test() {}
+#[cfg(test)]
+mod tests {
+    use super::*; //importa todas las funciones del módulo padre, en este caso solve.
+
+    fn approx_eq(a: f64, b: f64, eps: f64) -> bool {
+        (a - b).abs() < eps
+    }
+
+    #[test]
+    fn test_enunciado() {
+        let mut solver = Solver::new(vec![
+            Flatlander(50, 150),
+            Flatlander(0, 100),
+            Flatlander(100, 200),
+        ], 30.0);
+
+        let res = solver.solve();
+        assert!(approx_eq(res, 446.4101615137755, 1e-9));
+    }
+
+    #[test]
+    fn test_enunciado2() {
+        let mut solver = Solver::new(vec![
+            Flatlander(50, 150),
+            Flatlander(0, 100),
+            Flatlander(100, 200),
+        ], 45.0);
+
+        let res = solver.solve();
+        assert!(approx_eq(res, 300.00000000000006, 1e-9));
+    }
+
+    #[test]
+    fn test_un_solo_flatlander() {
+        let mut solver = Solver::new(vec![
+            Flatlander(10, 100),
+        ], 45.0);
+
+        let res = solver.solve();
+        assert!(approx_eq(res, 100.0, 1e-9));
+    }
+
+    #[test]
+    fn test_ninguno_se_superpone() {
+        let mut solver = Solver::new(vec![
+            Flatlander(0, 100),
+            Flatlander(200, 100),
+        ], 45.0);
+
+        let res = solver.solve();
+        assert!(approx_eq(res, 200.0, 1e-9));
+    }
+
+    #[test]
+    fn test_todos_se_superponen() {
+        let mut solver = Solver::new(vec![
+            Flatlander(0, 100),
+            Flatlander(0, 200),
+        ], 45.0);
+
+        let res = solver.solve();
+        assert!(approx_eq(res, 200.0, 1e-9));
+    }
+
+}
