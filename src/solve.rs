@@ -30,9 +30,8 @@ impl Solver {
     /// teniendo en cuenta si se superponen o no.
     /// Complejidad del algoritmo: O(n log n), siendo n la cantidad de flatlanders.
     pub fn solve(&mut self) -> f64 {
-
         if self.flatlanders.len() == 0 {
-            return 0.0 //este caso nunca deberia pasar, por el tema de los rangos pedidos del tp.
+            return 0.0; //este caso nunca deberia pasar, por el tema de los rangos pedidos del tp.
         }
         self.flatlanders.sort_by_key(|f| f.0);
         let mut total: f64 = 0.;
@@ -73,11 +72,14 @@ mod tests {
 
     #[test]
     fn test_enunciado() {
-        let mut solver = Solver::new(vec![
-            Flatlander(50, 150),
-            Flatlander(0, 100),
-            Flatlander(100, 200),
-        ], 30.0);
+        let mut solver = Solver::new(
+            vec![
+                Flatlander(50, 150),
+                Flatlander(0, 100),
+                Flatlander(100, 200),
+            ],
+            30.0,
+        );
 
         let res = solver.solve();
         assert!(approx_eq(res, 446.4101615137755, 1e-9));
@@ -85,11 +87,14 @@ mod tests {
 
     #[test]
     fn test_enunciado2() {
-        let mut solver = Solver::new(vec![
-            Flatlander(50, 150),
-            Flatlander(0, 100),
-            Flatlander(100, 200),
-        ], 45.0);
+        let mut solver = Solver::new(
+            vec![
+                Flatlander(50, 150),
+                Flatlander(0, 100),
+                Flatlander(100, 200),
+            ],
+            45.0,
+        );
 
         let res = solver.solve();
         assert!(approx_eq(res, 300.00000000000006, 1e-9));
@@ -97,9 +102,7 @@ mod tests {
 
     #[test]
     fn test_un_solo_flatlander() {
-        let mut solver = Solver::new(vec![
-            Flatlander(10, 100),
-        ], 45.0);
+        let mut solver = Solver::new(vec![Flatlander(10, 100)], 45.0);
 
         let res = solver.solve();
         assert!(approx_eq(res, 100.0, 1e-9));
@@ -107,10 +110,7 @@ mod tests {
 
     #[test]
     fn test_ninguno_se_superpone() {
-        let mut solver = Solver::new(vec![
-            Flatlander(0, 100),
-            Flatlander(200, 100),
-        ], 45.0);
+        let mut solver = Solver::new(vec![Flatlander(0, 100), Flatlander(200, 100)], 45.0);
 
         let res = solver.solve();
         assert!(approx_eq(res, 200.0, 1e-9));
@@ -118,13 +118,9 @@ mod tests {
 
     #[test]
     fn test_todos_se_superponen() {
-        let mut solver = Solver::new(vec![
-            Flatlander(0, 100),
-            Flatlander(0, 200),
-        ], 45.0);
+        let mut solver = Solver::new(vec![Flatlander(0, 100), Flatlander(0, 200)], 45.0);
 
         let res = solver.solve();
         assert!(approx_eq(res, 200.0, 1e-9));
     }
-
 }

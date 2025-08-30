@@ -1,11 +1,7 @@
-mod errors;
-mod flatlander;
-mod input;
-mod solve;
-
-use crate::errors::Error;
-use crate::input::parsear_lineas;
-use crate::solve::Solver;
+use std::io;
+use tp0_taller::errors::Error;
+use tp0_taller::input::parsear_lineas;
+use tp0_taller::solve::Solver;
 
 /// Esta funcion matchea el error recibido e imprime un string por stderr segun corresponda.
 fn handle_error(e: Error) {
@@ -19,7 +15,9 @@ fn handle_error(e: Error) {
 }
 
 fn main() {
-    let (theta, flatlanders) = match parsear_lineas() {
+    let stdin = io::stdin();
+    let mut handle = stdin.lock();
+    let (theta, flatlanders) = match parsear_lineas(&mut handle) {
         Ok(s) => s,
         Err(e) => {
             handle_error(e);
