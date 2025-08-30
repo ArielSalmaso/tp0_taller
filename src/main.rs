@@ -29,5 +29,5 @@ fn main() {
 
     let resultado = solver.solve();
 
-    println!("{:.6}", resultado); //medio en veremos esto
+    println!("{:.6}", resultado);
 }
