@@ -7,10 +7,10 @@ use tp0_taller::solve::Solver;
 fn handle_error(e: Error) {
     match e {
         Error::IO => eprintln!("Error: IO"),
-        Error::FueraRango => eprintln!("Error: Fuera de rango"),
-        Error::ValorFaltante => eprintln!("Error: Valor faltante"),
-        Error::NumeroInvalido => eprintln!("Error: Numero invalido"),
-        Error::LineaFaltante => eprintln!("Error: Linea faltante"),
+        Error::FueraRango => eprintln!("Error: \"Fuera de rango\""),
+        Error::ValorFaltante => eprintln!("Error: \"Valor faltante\""),
+        Error::NumeroInvalido => eprintln!("Error: \"Numero invalido\""),
+        Error::LineaFaltante => eprintln!("Error: \"Linea faltante\""),
     };
 }
 

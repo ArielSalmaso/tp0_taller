@@ -10,9 +10,7 @@ pub struct Solver {
 /// Función que calcula la tangente del angulo recibido por parametro
 fn calcular_tan(theta: f64) -> f64 {
     let theta_rads = theta.to_radians();
-    let tan_theta = theta_rads.tan();
-
-    tan_theta
+    theta_rads.tan()
 }
 
 impl Solver {
@@ -30,7 +28,7 @@ impl Solver {
     /// teniendo en cuenta si se superponen o no.
     /// Complejidad del algoritmo: O(n log n), siendo n la cantidad de flatlanders.
     pub fn solve(&mut self) -> f64 {
-        if self.flatlanders.len() == 0 {
+        if self.flatlanders.is_empty() {
             return 0.0; //este caso nunca deberia pasar, por el tema de los rangos pedidos del tp.
         }
         self.flatlanders.sort_by_key(|f| f.0);
@@ -58,7 +56,7 @@ impl Solver {
         }
 
         total += fin - inicio;
-        return total;
+        total
     }
 }
 

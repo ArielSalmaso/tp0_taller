@@ -12,7 +12,7 @@ use std::io::BufRead;
 fn leer_linea<R: BufRead>(reader: &mut R) -> Result<String, Error> {
     let mut linea: String = String::new();
 
-    if let Err(_) = reader.read_line(&mut linea) {
+    if reader.read_line(&mut linea).is_err() {
         return Err(Error::IO);
     }
 
@@ -39,7 +39,7 @@ fn leer_theta_n(partes: Vec<&str>) -> Result<(f64, usize), Error> {
 
     let theta: f64 = partes[0].parse().map_err(|_| Error::NumeroInvalido)?;
 
-    if theta < 10. || theta > 80. {
+    if !(10.0..=80.0).contains(&theta) {
         return Err(Error::FueraRango);
     };
 
@@ -75,7 +75,7 @@ fn leer_flatlander(partes: Vec<&str>) -> Result<Flatlander, Error> {
 
     let h: u32 = partes[1].parse().map_err(|_| Error::NumeroInvalido)?;
 
-    if h < 1 || h > 1000 {
+    if !(1..=1000).contains(&h) {
         return Err(Error::FueraRango);
     }
 
